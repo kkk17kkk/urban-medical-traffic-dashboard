@@ -1,0 +1,1007 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+<title>医院周边交通综合治理评价管理系统登录</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/scanboard.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/animsition.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/jquery.shCircleLoader.css' %}" />
+<script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.shCircleLoader-min.js' %}"></script>
+<style>
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		margin: 20px 0;
+	}
+	table, th, td {
+		border: 1px solid rgb(9, 169, 214);
+	}
+	th, td {
+		padding: 5px;
+		text-align: center;
+		color: #fafafa;
+	}
+	th {
+		background-color: rgb(29, 82, 189);
+	}
+	.buttonContainer {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+}
+
+.buttonContainer button {
+    padding: 20px;
+    font-size: 16px;
+    background: url('{% static 'images/infoBg.png' %}')
+	no-repeat center center;
+    background-size: cover;
+    color: rgb(251, 252, 252);
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 220px; /* 设置固定宽度 */
+    height: 60px; /* 设置固定高度 */
+}
+
+.buttonContainer button:hover {
+    opacity: 0.8; /* 鼠标悬停效果 */
+}
+
+/* 模态窗口的样式 */
+.modal {
+	display: none; /* 默认隐藏 */
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0, 0, 0, 0.6); /* 背景色为深色 */
+	padding-top: 60px;
+}
+.modal-content {
+	background-color: #003366; /* 深蓝色背景 */
+	color: #fff; /* 白色字体 */
+	margin: 5% auto;
+	padding: 20px;
+	border-radius: 8px; /* 圆角边框 */
+	width: 40%;
+	max-width: 500px; /* 最大宽度 */
+}
+.modal-content h2 {
+	font-size: 24px;
+	font-weight: bold;
+	margin-bottom: 20px;
+}
+.close {
+	color: #fff;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+	cursor: pointer;
+}
+.close:hover,
+.close:focus {
+	color: #ddd;
+	text-decoration: none;
+}
+.input-group {
+	margin-bottom: 20px;
+}
+.input-group input {
+	width: calc(100% - 22px); /* 使输入框宽度适应 */
+	padding: 10px;
+	border: none;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
+.input-group input[type="text"] {
+	color: #003366;
+	background-color: #fff;
+}
+.input-group input[type="password"] {
+	color: #003366;
+	background-color: #fff;
+}
+.button_change{
+	background-color: #0056b3; /* 按钮背景颜色 */
+	color: #fff; /* 按钮文字颜色 */
+	border: none;
+	padding: 10px 20px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin-top: 10px;
+	cursor: pointer;
+	border-radius: 4px;
+	transition: background-color 0.3s ease;
+}
+.button_change:hover {
+	background-color: #003366; /* 鼠标悬停时的背景颜色 */
+}
+.table1, .table2 {
+    width: 100%;
+    border-collapse: collapse;
+}
+.table1 th, .table1 td, .table2 th, .table2 td {
+    border: 1px solid #1eb6fe;
+    padding: 8px;
+    text-align: center;
+}
+.table1 th {
+    background-color: #1eb6fe;
+    color: white;
+}
+.table1 img {
+    width: 100px; /* 根据需要调整 */
+    height: auto;
+    max-width: 100%; /* 防止图片超出单元格 */
+    display: block;
+    margin: auto;
+}
+.summary {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.summaryTop, .summaryBottom {
+	display: flex;
+	justify-content: space-around;
+	width: 100%;
+	margin-top: 20px;
+}
+
+</style>
+<script type="text/javascript">
+    var yyiconUrl = "{% static 'images/yyicon.png' %}";
+</script>
+</head>
+<body>
+	<div id="loader"></div>
+	<script type="text/javascript">
+		$(document).ready(function() {
+            $("#loader").shCircleLoader({color: "#00deff"});
+							
+            $(".animsition").animsition({
+                inClass: 'fade-in',
+                outClass: 'fade-out',
+                inDuration: 1500,
+                outDuration: 800,
+                linkElement: '.animsition-link',
+                loading: true,
+                loadingParentElement: 'body',
+                loadingClass: 'animsition-loading',
+                unSupportCss: ['animation-duration', '-webkit-animation-duration', '-o-animation-duration'],
+                overlay: false,
+                overlayClass: 'animsition-overlay-slide',
+                overlayParentElement: 'body',
+                onLoadEvent: true,
+                browser: [ 'animation-duration', '-webkit-animation-duration', '-o-animation-duration' ],
+                overlay : false,
+                overlayClass : 'animsition-overlay-slide',
+                overlayParentElement : 'body',
+                transition: function(url){ window.location.href = url; }
+            }).one('animsition.inEnd', function(){
+                $('#loader').shCircleLoader('destroy');
+                $('#content').fadeIn();
+            });
+
+        });
+    </script>
+	
+	<!--Top Start!-->
+	<div class="scanboardWp animsition">
+		<div id="top" >
+			<div class="wp clearfix">
+				<div class="left pageTit">
+					<a class="summaryBtn" href="javascript:;">调研与得分情况看板</a>
+				</div>
+				<div class="center topLogo">
+					<a>
+						<img src="{% static 'images/tit.png' %}">
+					</a>
+				</div>
+				<div class="right topBar">
+					<div class="topTime">时间加载中...</div>
+					<div class="clearfix">
+						<a class="signOut fr" href='{% url 'logout' %}'>退出</a>
+						<div class="company fr">
+							<!--h3>欢迎, {{ user.username }}</h3-->
+							<h3>欢迎, {{ request.user.username }}</h3>
+							<div class="dropdown">
+								<a href="#" id="change-password-btn">修改密码</a>
+							</div>
+						</div>
+						<div id="change-password-modal" class="modal">
+							<div class="modal-content">
+								<span class="close">&times;</span>
+								<h2>修改密码</h2>
+								<form action="{% url 'change_password' %}" method="post">
+									{% csrf_token %}
+									<div class="input-group">
+										<input type="password" id="old_password" name="old_password" placeholder="旧密码" required>
+									</div>
+									
+									<div class="input-group">
+										<input type="password" id="new_password1" name="new_password1" placeholder="新密码" required>
+									</div>
+
+									<div class="input-group">
+										<input type="password" id="new_password2" name="new_password2" placeholder="确认新密码" required>
+									</div>
+									
+									<button type="submit" class='button_change'>提交</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Top End!-->
+		
+		<!--Main Start!-->
+		<div id="main" class="wp clearfix">
+			<div class="left">
+				<!--二级指标得分情况-->
+				<div class="item waybill">
+					<div class="itemTit">
+						<span class="border-yellow">二级指标得分情况</span>
+					</div>
+						<div class="itemCon itembg">
+							{% for group in dashboard.selected.groups %}
+							<div class="progress" progress="{{ group.percent }}%">
+								<h3 class="clearfix"><span>{{ group.label }}</span><i>{{ group.score }}/满分{{ group.max }}</i></h3>
+								<div class="progressBar">
+									<span></span>
+								</div>
+								<h4>0%</h4>
+							</div>
+							{% empty %}
+							<p style="color:#fff;text-align:center;padding:24px;">暂无评分数据</p>
+							{% endfor %}
+						</div>
+				</div>
+
+				<!--区属得分排名-->
+				<div class="item">
+					<div class="itemTit">
+						<span class="border-green">区属得分排名</span>
+					</div>
+					<table>
+						<thead>
+							<tr>
+								<th>排名</th>
+								<th>区属</th>
+								<th>平均分</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for item in dashboard.area_ranking %}
+							<tr>
+								<td>{{ item.rank }}</td>
+								<td>{{ item.area }}</td>
+								<td>{{ item.score }}</td>
+							</tr>
+							{% empty %}
+							<tr><td colspan="3">暂无区属排名数据</td></tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="center">
+				<div class="centerWp">
+					<!--中间大地图-->
+					<div class="mapContainer">
+							<select name="h_area">
+								<option value="">请选择区域</option>
+								{% for item in dashboard.area_ranking %}
+								<option value="{{ item.area }}">{{ item.area }}</option>
+								{% endfor %}
+							</select>
+						<div class="btnLayer">
+							<div class="search">
+								<div class="searchInner">
+									<a href="javascript:;" class="searchBtn"><span class="icoSearch"></span></a>
+									<form class="searchForm">
+										<button type="button" class="icoSearch"></button>
+										<input type="text" name="h_name" placeholder="请搜索医院">
+									</form>
+								</div>
+							</div>
+							<a href="javascript:;" class="infoBtn"><span class="icoCar"></span></a>
+						</div>
+						<div id="myMap" class="item"></div>
+					</div>
+					
+					
+					<!--按钮-->
+					<div class="item basicInfo">
+						<div class="buttonContainer">
+							{% if role == 'admin' %}
+							<button ><a href="javascript:void(0);" onclick="window.location.href='{% url 'yygl' %}'" style="color:#fff">医院信息管理</a></button>
+							<button ><a href="javascript:void(0);" onclick="window.location.href='{% url 'zhzl' %}'" style="color:#fff">卫健委综合治理信息提交</a></button>
+							{% endif %}
+							{% if role == 'admin' or role == 'surveyor' %}
+							<button ><a href="javascript:void(0);" onclick="window.location.href='{% url 'dybtj' %}'" style="color:#fff">卫健委调研信息</a></button>
+							{% endif %}
+						</div>
+					</div>
+
+					<!--得分季度变化趋势-->
+					<!--用summaryLine替换-->	
+					<div class="billChart">
+						<div class="itemTit">
+							<span class="border-blue">得分季度变化趋势</span>
+						</div>
+						<div id="myChart1"></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="right">
+				<!--医院信息-->
+				<div class="item total itembg">
+					<div class="itemTit">
+						<span class="border-yellow" name="h_name">医院名称</span>
+					</div>
+					<div class="itemCon">
+						<div class="totalNum">
+							<!--p><strong>{{ hinfo_user.h_name }}</strong></p>
+							<span>区属：{{hinfo_user.h_area}}</span>
+							<span> | 得分：{{ hscore_user.sum_score }}</span-->
+							<p><strong>{{ hinfo_user.h_name|default:"暂无医院数据" }}</strong></p>
+							<span>区属：{{ hinfo_user.h_area|default:"-" }}</span>
+							<span> | 得分：{{ hscore_user.sum_score|default:"-" }}</span>
+						</div>
+					</div>
+				</div>
+
+				<!--增长情况-->
+				<div class="item basicInfo">
+					<div class="itemTit">
+						<span class="border-green">增长情况</span>
+					</div>
+					<div class="itemCon itembg">
+						<div class="infoPie">
+							<ul class="clearfix">
+								<li class="color-yellow">
+									<span class="border-yellow" id="indicator1" total="{{ dashboard.summary.scored_count|default:0 }}">0</span>
+									<p>已评分医院</p>
+								</li>
+								<li class="color-green">
+									<span class="border-green" id="indicator2" total="{{ dashboard.summary.selected_area_avg|default:0 }}">0</span>
+									<p>区属平均分</p>
+								</li>
+								<li class="color-blue">
+									<span class="border-blue" id="indicator3" total="{{ dashboard.summary.city_avg|default:0 }}">0</span>
+									<p>全市平均分</p>
+								</li>
+							</ul>
+							<div id="indicatorContainer"></div>
+						</div>
+					</div>
+				</div>
+
+				<!--医院综合得分排名-->
+				<div class="item billState">
+					<div class="itemTit">
+						<span class="border-green">全市医院综合得分排名</span>
+					</div>
+					<div class="itemCon">
+						<div class="StateBox">
+							<div class="StateTit">
+								<span style="width:50px">排名</span>
+								<span style="width:150px">医院名称</span>
+								<span>得分</span>
+							</div>
+							<div id="FontScroll">
+								<ul>
+									<li>
+										<div class="fontInner clearfix">
+											<span style="width:70px">1</span>
+											<span style="width:130px">{{hscore.0.h_name}}</span>
+											<span>
+												<div class="progress" progress="{{hscore.0.sum_score}}100%">
+													<div class="progressBar">
+														<span></span>
+													</div>
+													<h3><i><h4></h4></i></h3>
+												</div>
+											</span>
+										</div>
+									</li>
+									<li>
+										<div class="fontInner clearfix">
+											<span style="width:70px">2</span>
+											<span style="width:130px">{{hscore.1.h_name}}</span>
+											<span>
+												<div class="progress" progress="{{hscore.0.sum_score}}%">
+													<div class="progressBar">
+														<span></span>
+													</div>
+													<h3><i><h4></h4></i></h3>
+												</div>
+											</span>
+										</div>
+									</li>
+									<li>
+										<div class="fontInner clearfix">
+											<span style="width:70px">3</span>
+											<span style="width:130px">{{hscore.2.h_name}}</span>
+											<span>
+												<div class="progress" progress="{{hscore.0.sum_score}}%">
+													<div class="progressBar">
+														<span></span>
+													</div>
+													<h3><i><h4></h4></i></h3>
+												</div>
+											</span>
+										</div>
+									</li>
+									<li>
+										<div class="fontInner clearfix">
+											<span style="width:70px">4</span>
+											<span style="width:130px">{{hscore.3.h_name}}</span>
+											<span>
+												<div class="progress" progress="{{hscore.1.sum_score}}%">
+													<div class="progressBar">
+														<span></span>
+													</div>
+													<h3><i><h4></h4></i></h3>
+												</div>
+											</span>
+										</div>
+									</li>
+									<li>
+										<div class="fontInner clearfix">
+											<span style="width:70px">5</span>
+											<span style="width:130px">医院</span>
+											<span>
+												<div class="progress" progress="95%">
+													<div class="progressBar">
+														<span></span>
+													</div>
+													<h3><i><h4></h4></i></h3>
+												</div>
+											</span>
+										</div>
+									</li>
+									<li>
+										<div class="fontInner clearfix">
+											<span style="width:70px">6</span>
+											<span style="width:130px">医院</span>
+											<span>
+												<div class="progress" progress="94.5%">
+													<div class="progressBar">
+														<span></span>
+													</div>
+													<h3><i><h4></h4></i></h3>
+												</div>
+											</span>
+										</div>
+									</li>
+									<li>
+										<div class="fontInner clearfix">
+											<span style="width:70px">7</span>
+											<span style="width:130px">医院</span>
+											<span>
+												<div class="progress" progress="94%">
+													<div class="progressBar">
+														<span></span>
+													</div>
+													<h3><i><h4></h4></i></h3>
+												</div>
+											</span>
+										</div>
+									</li>
+									<li>
+										<div class="fontInner clearfix">
+											<span style="width:70px">8</span>
+											<span style="width:130px">医院</span>
+											<span>
+												<div class="progress" progress="93%">
+													<div class="progressBar">
+														<span></span>
+													</div>
+													<h3><i><h4></h4></i></h3>
+												</div>
+											</span>
+										</div>
+									</li>
+									<li>
+										<div class="fontInner clearfix">
+											<span style="width:70px">9</span>
+											<span style="width:130px">医院</span>
+											<span>
+												<div class="progress" progress="92%">
+													<div class="progressBar">
+														<span></span>
+													</div>
+													<h3><i><h4></h4></i></h3>
+												</div>
+											</span>
+										</div>
+									</li>
+									<li>
+										<div class="fontInner clearfix">
+											<span style="width:70px">10</span>
+											<span style="width:130px">医院</span>
+											<span>
+												<div class="progress" progress="90%">
+													<div class="progressBar">
+														<span></span>
+													</div>
+													<h3><i><h4></h4></i></h3>
+												</div>
+											</span>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Main End!-->
+	</div>
+
+	<!--调研-->
+	<div class="filterbg"></div>
+	<div class="popup">
+		<a href="javascript:;" class="popupClose"></a>
+		<div class="summary">
+			<div class="summaryTop">
+				<table class="table1">
+					<thead>
+						<tr>
+							<th>有工作人员引导机动车入院</th>
+							<th>有工作人员管理医院出入口处非机动车停放</th>
+							<th>是否与周边地区停车资源共享</th>
+							<th>出入口附近是否有机动车违法停车</th>
+							<th>出入口附近是否有非机动车与低速三四轮车乱停乱放</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><img src="{% static 'images/1.jpg' %}" ></td>
+							<td><img src="{% static 'images/2.jpg' %}" ></td>
+							<td><img src="{% static 'images/3.jpg' %}" ></td>
+							<td><img src="{% static 'images/4.jpg' %}" ></td>
+							<td><img src="{% static 'images/5.jpg' %}" ></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="summaryBottom">
+				<table class="table2" style="border: 1px solid #1eb6fe;">
+					<thead>
+						<tr>
+							<th>一级指标</th>
+							<th>二级指标</th>
+							<th>分数</th>
+							<th>满分</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td rowspan="4">内部管理</td>
+							<td>上下午门诊号源比例</td>
+							<td>5</td>
+							<td>5</td>
+						</tr>
+						<tr>
+							<td>预约就诊率</td>
+							<td>10</td>
+							<td>10</td>
+						</tr>
+						<tr>
+							<td>预约就诊精准时间</td>
+							<td>10</td>
+							<td>10</td>
+						</tr>
+						<tr>
+							<td>医院内停车位向患者开放比例</td>
+							<td>10</td>
+							<td>10</td>
+						</tr>
+						<tr>
+							<td rowspan="5">交通基础设施</td>
+							<td>医院周边是否设置禁停标志标线</td>
+							<td>2</td>
+							<td>2</td>
+						</tr>
+						<tr>
+							<td>医院周边是否设置行人过街设施设备</td>
+							<td>2</td>
+							<td>2</td>
+						</tr>
+						<tr>
+							<td>医院周边是否设置限速或减速标志标识</td>
+							<td>2</td>
+							<td>2</td>
+						</tr>
+						<tr>
+							<td>医院周边是否设置注意行人标志</td>
+							<td>2</td>
+							<td>2</td>
+						</tr>
+						<tr>
+							<td>医院周边非现场执法监拍设施是否覆盖到位</td>
+							<td>2</td>
+							<td>2</td>
+						</tr>
+						<tr>
+							<td rowspan="2">人员引导</td>
+							<td>有工作人员引导机动车入院</td>
+							<td>5</td>
+							<td>5</td>
+						</tr>
+						<tr>
+							<td>有工作人员管理医院出入口处非机动车停放</td>
+							<td>5</td>
+							<td>5</td>
+						</tr>
+						<tr>
+							<td rowspan="3">交通秩序</td>
+							<td>是否与周边地区停车资源共享</td>
+							<td>5</td>
+							<td>5</td>
+						</tr>
+						<tr>
+							<td>出入口附近是否有机动车违法停车</td>
+							<td>0</td>
+							<td>5</td>
+						</tr>
+						<tr>
+							<td>出入口附近是否有非机动车与低速三四轮车乱停乱放</td>
+							<td>5</td>
+							<td>5</td>
+						</tr>
+						<tr>
+							<td rowspan="2">主观积极</td>
+							<td>数据上报及时</td>
+							<td>15</td>
+							<td>15</td>
+						</tr>
+						<tr>
+							<td>积极配合调研</td>
+							<td>15</td>
+							<td>15</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		
+	</div>
+
+	<div class="carInfo">
+		<a href="javascript:;" class="carClose"></a>
+		<div class="infoBox">
+			<div class="infoTop">
+				<div class="infoTit">
+					<img src="{% static 'images/tit3.png' %}">
+				</div>
+			</div>
+			<div class="infoMain">
+				<div class="infoLeft fl">
+					<div class="topSearch">
+						<form>
+							<button></button>
+							<input type="text" name="" placeholder="请输入医院名称搜索">
+						</form>
+					</div>
+					<div class="carState">
+						<h3>
+							<span class="fl">医院名称</span>
+							<span class="fr">得分</span>
+						</h3>
+						<ul class="stateUl">
+							<li>
+								<p></p>
+								<span class="work"></span>
+							</li>
+							<li>
+								<p> </p>
+								<span class="nowork"></span>
+							</li>
+							<li>
+								<p> </p>
+								<span class="work"></span>
+							</li>
+							<li>
+								<p> </p>
+								<span class="nowork"></span>
+							</li>
+							<li>
+								<p> </p>
+								<span class="work"></span>
+							</li>
+							<li>
+								<p> </p>
+								<span class="nowork"></span>
+							</li>
+							<li>
+								<p> </p>
+								<span class="work"></span>
+							</li>
+							<li>
+								<p> </p>
+								<span class="nowork"></span>
+							</li>
+							<li>
+								<p> </p>
+								<span class="work"></span>
+							</li>
+							<li>
+								<p> </p>
+								<span class="nowork"> </span>
+							</li>
+							<li>
+								<p> </p>
+								<span class="work"> </span>
+							</li>
+							<li>
+								<p> </p>
+								<span class="nowork"> </span>
+							</li>
+							<li>
+								<p> </p>
+								<span class="work"> </span>
+							</li>
+							<li>
+								<p> </p>
+								<span class="nowork"> </span>
+							</li>
+							<li>
+								<p> </p>
+								<span class="work"> </span>
+							</li>
+							<li>
+								<p> </p>
+								<span class="nowork"> </span>
+							</li>
+							<li>
+								<p> </p>
+								<span class="work"> </span>
+							</li>
+							<li>
+								<p> </p>
+								<span class="nowork"> </span>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="infoRight fr">
+					<div class="rightWp">
+						<div class="carIntro">
+							<div class="introBox fl">
+
+							</div>
+							<div class="driver fr">
+								<div class="photo">
+									<img src="{% static 'images/yy.png' %}">
+								</div>
+								<p>医院：{{ hinfo_user.h_name }}</p>
+							</div>
+						</div>
+						<div class="timetable">
+							<div class="topTool">
+								<div class="tableExplain fl">
+									<div class="itemExplain fl">
+										<span class="bg-green"></span>
+										<p>司机工作时间</p>
+									</div>
+									<div class="itemExplain fl">
+										<span class="bg-blue"></span>
+										<p>标准白晚班时间</p>
+									</div>
+								</div>
+								<div class="topBtns fr">
+									<a href="javascript:;" class="prevWeek">上一季</a>
+									<a href="javascript:;" class="nextWeek">下一季</a>
+								</div>
+							</div>
+							<div class="tiemWp">
+								<div class="timeInner">
+									<div class="weekList">
+										<div class="weekItem">
+											<div class="space1"></div>
+											<p>内部管理</p>
+										</div>
+										<div class="weekItem">
+											<div class="space1"></div>
+											<p>交通基础设施</p>
+										</div>
+										<div class="weekItem">
+											<div class="space1"></div>
+											<p>人员引导</p>
+										</div>
+										<div class="weekItem">
+											<div class="space1"></div>
+											<p>交通秩序</p>
+										</div>
+										<div class="weekItem">
+											<div class="space1"></div>
+											<p>主观积极</p>
+										</div>
+										<div class="weekItem">
+											<div class="space1"></div>
+											<p>总分</p>
+										</div>
+									</div>
+									<div class="timeBox">
+										<div class="dataContainer">
+											<div class="dataBox">
+												<div class="space1"></div>
+												<div class="workTime"></div>
+												<div class="space2"></div>
+												<div class="standard"></div>
+												<div class="space3"></div>
+											</div>
+											<div class="dataBox">
+												<div class="space1"></div>
+												<div class="workTime"></div>
+												<div class="space2"></div>
+												<div class="standard"></div>
+												<div class="space3"></div>
+											</div>
+											<div class="dataBox">
+												<div class="space1"></div>
+												<div class="workTime"></div>
+												<div class="space2"></div>
+												<div class="standard"></div>
+												<div class="space3"></div>
+											</div>
+											<div class="dataBox">
+												<div class="space1"></div>
+												<div class="workTime"></div>
+												<div class="space2"></div>
+												<div class="standard"></div>
+												<div class="space3"></div>
+											</div>
+											<div class="dataBox">
+												<div class="space1"></div>
+												<div class="workTime"></div>
+												<div class="space2"></div>
+												<div class="standard"></div>
+												<div class="space3"></div>
+											</div>
+											<div class="dataBox">
+												<div class="space1"></div>
+												<div class="workTime"></div>
+												<div class="space2"></div>
+												<div class="standard"></div>
+												<div class="space3"></div>
+											</div>
+										</div>
+										<div class="timeLine line1"><span>40%</span></div>
+										<div class="timeLine line2"><span>50%</span></div>
+										<div class="timeLine line3"><span>60%</span></div>
+										<div class="timeLine line4"><span>70%</span></div>
+										<div class="timeLine line5"><span>80%</span></div>
+										<div class="timeLine line6"><span>90%</span></div>
+										<div class="timeLine line7"><span>100%</span></div>
+									</div>
+								</div>
+								<div class="totalTable">
+									<div class="totalTit">
+										<span>得分</span>
+										<span>排名</span>
+									</div>
+									<div class="totalData">
+										<div class="totalItem">
+											<div class="space1"></div>
+											<div class="tatleWp">
+												<span>0.00</span>
+												<span>0</span>
+											</div>
+											<div class="totalBar"></div>
+										</div>
+										<div class="totalItem">
+											<div class="space1"></div>
+											<div class="tatleWp">
+												<span>0.00</span>
+												<span>0</span>
+											</div>
+											<div class="totalBar"></div>
+										</div>
+										<div class="totalItem">
+											<div class="space1"></div>
+											<div class="tatleWp">
+												<span>0.00</span>
+												<span>0</span>
+											</div>
+											<div class="totalBar"></div>
+										</div>
+										<div class="totalItem">
+											<div class="space1"></div>
+											<div class="tatleWp">
+												<span>0.00</span>
+												<span>0</span>
+											</div>
+											<div class="totalBar"></div>
+										</div>
+										<div class="totalItem">
+											<div class="space1"></div>
+											<div class="tatleWp">
+												<span>0.00</span>
+												<span>0</span>
+											</div>
+											<div class="totalBar"></div>
+										</div>
+										<div class="totalItem">
+											<div class="space1"></div>
+											<div class="tatleWp">
+												<span>0.00</span>
+												<span>0</span>
+											</div>
+											<div class="totalBar"></div>
+										</div>
+										<div class="totalItem">
+											<div class="space1"></div>
+											<div class="tatleWp">
+												<span>0.00</span>
+												<span>0</span>
+											</div>
+											<div class="totalBar"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<canvas id="canvas" style="position: absolute;top: 0;left: 0;"></canvas> 
+</body>
+<script>
+	var modal = document.getElementById("change-password-modal");
+	var btn = document.getElementById("change-password-btn");
+	var span = document.getElementsByClassName("close")[0];
+	/*弹出到最上层*/
+	modal.style.zIndex = 9999;
+	/*弹出框居中*/
+	modal.style.top = "50%";
+	modal.style.left = "50%";
+	modal.style.transform = "translate(-50%, -50%)";
+
+	btn.onclick = function() {
+		modal.style.display = "block";
+	}
+
+	span.onclick = function() {
+		modal.style.display = "none";
+	}
+
+	window.onclick = function(event) {
+		if (event.target == modal) {
+			modal.style.display = "none";
+		}
+	}
+
+</script>
+<script type="text/javascript" src="{% static 'js/bg.js' %}"></script>
+<script>
+	window.DASHBOARD_DATA = {{ dashboard_json|safe }};
+</script>
+<script type="text/javascript" src="{% static 'js/fontscroll.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.animsition.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.nicescroll.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/echarts.min.js' %}"></script>
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.3&key={{ amap_key|default:'YOUR_AMAP_WEB_KEY' }}"></script>
+<script type="text/javascript" src="{% static 'js/scanboard.js' %}"></script>
+</html>

@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>调研表提交</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/scanboard.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/table.css' %}">
+    <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+    <style>
+        .demo-form { max-width: 980px; margin: 28px auto; color: #fff; }
+        .demo-form table { width: 100%; border-collapse: collapse; background: rgba(6, 31, 56, .72); }
+        .demo-form td { padding: 14px; border: 1px solid rgba(30, 182, 254, .35); }
+        .demo-form select, .demo-form input, .demo-form textarea {
+            width: 100%; box-sizing: border-box; padding: 8px 10px; color: #fff;
+            border: 1px solid #1eb6fe; background: rgba(0, 20, 42, .72);
+        }
+        .demo-form input[type=file] { padding: 6px; }
+        .demo-actions { display: flex; justify-content: center; gap: 16px; padding: 18px; }
+        .demo-actions button { min-width: 120px; padding: 10px 18px; color: #fff; background: #0b8fce; border: 0; cursor: pointer; }
+        .message { text-align: center; margin-top: 14px; color: #00deff; }
+    </style>
+</head>
+<body>
+<div class="scanboardWp animsition">
+    <div id="top">
+        <div class="wp clearfix">
+            <div class="left pageTit"><a class="summaryBtn" href="javascript:history.back()">返回</a></div>
+            <div class="center topLogo"><a><img src="{% static 'images/tit.png' %}"></a></div>
+            <div class="right topBar">
+                <div class="topTime">时间加载中...</div>
+                <div class="clearfix"><a class="signOut fr" href="{% url 'logout' %}">退出</a></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="item billState demo-form">
+        <div class="itemTit"><span class="border-green">卫健委调研表提交</span></div>
+        <form id="surveyForm" enctype="multipart/form-data" method="post" action="{% url 'add_dyb' %}">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <td>医院区属</td>
+                    <td>
+                        <select name="h_area" id="h_area" required>
+                            <option value="">请选择</option>
+                            {% for area in h_areas %}<option value="{{ area }}">{{ area }}</option>{% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>医院名称</td>
+                    <td><select name="h_id" id="h_id" required><option value="">请先选择区属</option></select></td>
+                </tr>
+                <tr><td>是否有工作人员引导机动车入院</td><td><select name="YDRY" required><option value="">请选择</option><option>是</option><option>否</option></select><input type="file" name="YDRY_img" accept="image/*"></td></tr>
+                <tr><td>是否有工作人员管理非机动车停放</td><td><select name="GLTF" required><option value="">请选择</option><option>是</option><option>否</option></select><input type="file" name="GLTF_img" accept="image/*"></td></tr>
+                <tr><td>是否与周边停车资源共享</td><td><select name="TCGX" required><option value="">请选择</option><option>是</option><option>否</option></select><input type="file" name="TCGX_img" accept="image/*"></td></tr>
+                <tr><td>出入口附近是否有机动车违法停车</td><td><select name="WFTC" required><option value="">请选择</option><option>是</option><option>否</option></select><input type="file" name="WFTC_img" accept="image/*"></td></tr>
+                <tr><td>出入口附近是否有非机动车乱停乱放</td><td><select name="FJDCLF" required><option value="">请选择</option><option>是</option><option>否</option></select><input type="file" name="FJDCLF_img" accept="image/*"></td></tr>
+                <tr><td>备注</td><td><textarea name="BZ" rows="4" maxlength="1000"></textarea></td></tr>
+            </table>
+            <div class="demo-actions">
+                <button type="submit">提交</button>
+                <button type="reset">重置</button>
+            </div>
+            <div id="message" class="message"></div>
+        </form>
+    </div>
+</div>
+<script>
+function csrfToken() {
+    return document.querySelector('[name=csrfmiddlewaretoken]').value;
+}
+document.getElementById('h_area').addEventListener('change', function () {
+    const select = document.getElementById('h_id');
+    select.innerHTML = '<option value="">加载中...</option>';
+    fetch("{% url 'get_hospitals_by_area' %}?area=" + encodeURIComponent(this.value))
+        .then(response => response.json())
+        .then(data => {
+            select.innerHTML = '<option value="">请选择</option>';
+            data.hospitals.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.id;
+                option.textContent = item.h_name;
+                select.appendChild(option);
+            });
+        });
+});
+document.getElementById('surveyForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+    const message = document.getElementById('message');
+    fetch(this.action, {
+        method: 'POST',
+        body: new FormData(this),
+        headers: {'X-CSRFToken': csrfToken(), 'X-Requested-With': 'XMLHttpRequest'}
+    })
+        .then(response => response.json())
+        .then(data => {
+            message.textContent = data.message || (data.success ? '提交成功。' : '提交失败。');
+            if (data.success) this.reset();
+        })
+        .catch(error => { message.textContent = '提交失败：' + error; });
+});
+</script>
+</body>
+</html>

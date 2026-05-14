@@ -1,0 +1,278 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+<title>医院信息管理系统</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/yygl.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/animsition.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/jquery.shCircleLoader.css' %}" />
+<script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'css/modal.css' %}" />
+<script type="text/javascript" src="{% static 'js/jquery.shCircleLoader-min.js' %}"></script>
+</head>
+<body>
+    <canvas id="canvas" style="position: absolute;top: 0;left: 0;"></canvas>
+    <div id="loader"></div>
+    <script type="text/javascript">
+        $('#loader').shCircleLoader({color: "#00deff"});
+    </script>
+    <input type="hidden" id="addHospitalUrl" value="{% url 'add_hospital' %}">
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+
+    <!--Top Start!-->
+    <div class="scanboardWp animsition">
+		<div id="top" >
+			<div class="wp clearfix">
+				<div class="left pageTit">
+					<a class="summaryBtn" href="javascript:history.back()">返回</a>
+				</div>
+				<div class="center topLogo">
+					<a>
+						<img src="{% static 'images/tit.png' %}">
+					</a>
+				</div>
+				<div class="right topBar">
+					<div class="topTime">时间加载中...</div>
+					<div class="clearfix">
+						<a class="signOut fr" href='{% url 'logout' %}'>退出</a>
+
+					</div>
+				</div>
+			</div>
+		</div>
+        <!--Top End!-->
+
+        <!--Main Start!-->
+        <!-- 查询功能 -->
+        <div class="search-box">
+            <form id="searchForm" action="{% url 'hospital_search' %}" method="get">
+                <div class="search-item">
+                    <label for="hospitalId">医院序号:</label>
+                    <input type="text" id="hospitalId" name="hospitalId" placeholder="输入医院序号">
+                </div>
+                <div class="search-item">
+                    <label for="hospitalName">医院名称:</label>
+                    <input type="text" id="hospitalName" name="hospitalName" placeholder="输入医院名称">
+                </div>
+                <div class="search-item">
+                    <label for="hospitalDistrict">医院区属:</label>
+                    <select id="hospitalDistrict" name="hospitalDistrict">
+                        <option value="">请选择医院区属</option>
+                        <option value="海淀区">海淀区</option>
+                        <option value="朝阳区">朝阳区</option>
+                        <option value="密云区">密云区</option>
+                        <option value="延庆区">延庆区</option>
+                        <option value="丰台区">丰台区</option>
+                        <option value="石景山区">石景山区</option>
+                        <option value="门头沟区">门头沟区</option>
+                        <option value="房山区">房山区</option>
+                        <option value="通州区">通州区</option>
+                        <option value="顺义区">顺义区</option>
+                        <option value="昌平区">昌平区</option>
+                        <option value="大兴区">大兴区</option>
+                        <option value="怀柔区">怀柔区</option>
+                        <option value="平谷区">平谷区</option>
+                        <option value="东城区">东城区</option>
+                        <option value="西城区">西城区</option>
+                    </select>
+                </div>
+                <div class="search-item">
+                    <label for="hospitalType">医院类型:</label>
+                    <select id="hospitalType" name="hospitalType">
+                        <option value="">请选择医院类型</option>
+                        <option value="一级甲等医院">一级甲等医院</option>
+                        <option value="一级乙等医院">一级乙等医院</option>
+                        <option value="一级丙等医院">一级丙等医院</option>
+                        <option value="二级甲等医院">二级甲等医院</option>
+                        <option value="二级乙等医院">二级乙等医院</option>
+                        <option value="二级丙等医院">二级丙等医院</option>
+                        <option value="三级特等医院">三级特等医院</option>
+                        <option value="三级甲等医院">三级甲等医院</option>
+                        <option value="三级乙等医院">三级乙等医院</option>
+                        <option value="三级丙等医院">三级丙等医院</option>
+                    </select>
+                </div>
+                <div class="search-item">
+                    <label for="status">状态:</label>
+                    <select id="status" name="status">
+                        <option value="active">启用</option>
+                        <option value="inactive">停用</option>
+                        <option value="all">全部</option>
+                    </select>
+                </div>
+                <div class="search-item">
+                    <button type="submit">查询</button>
+                </div>
+            </form>
+            <div class="search-item">
+                <button onclick="openAddHospitalModal()" id="openAddHospitalButton">增加医院</button>
+            </div>
+        </div>
+
+        <!-- 表格 -->
+        <div class="table-wrapper">
+            <!-- 表格标题 -->
+                <div class="table-title">
+                <div class="table-cell">医  院  序  号</div>
+                <div class="table-cell">医  院  名  称</div>
+                <div class="table-cell">医  院  区  属</div>
+                <div class="table-cell">医  院  类  型</div>
+                <div class="table-cell">状  态</div>
+                <div class="table-cell">编  辑</div>
+            </div>
+            <!-- 表格内容 -->
+            <div id="hospitalTable">
+                {% for hospital in hospitals %}
+                <div class="table-row">
+                    <div class="table-cell">{{ hospital.id }}</div>
+                    <div class="table-cell">{{ hospital.h_name }}</div>
+                    <div class="table-cell">{{ hospital.h_area }}</div>
+                    <div class="table-cell">{{ hospital.h_type }}</div>
+                    <div class="table-cell">{% if hospital.is_active %}启用{% else %}停用{% endif %}</div>
+                    <div class="table-cell">
+                        <button class="update-btn" data-hospital-id="{{ hospital.id }}">修改</button> \ 
+                        <button class="delete-btn" data-hospital-id="{{ hospital.id }}">停用</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    <!-- 增加模态框 -->
+    <div id="addHospitalModal" class="modal">
+        <div class="modal-content">
+            <span class="close add-close">&times;</span>
+            <div class="top-title"><label>请输入增加的医院信息</label></div>
+            <form id="addHospitalForm">
+                <label for="addHospitalName">医院名称:</label>
+                <input type="text" id="addHospitalName" name="hospitalName" required>
+    
+                <label for="addHospitalArea">医院区属:</label>
+                <select  id="addHospitalArea" name="hospitalArea" required>
+                    <option value="海淀区">海淀区</option>
+                    <option value="朝阳区">朝阳区</option>
+                    <option value="密云区">密云区</option>
+                    <option value="延庆区">延庆区</option>
+                    <option value="丰台区">丰台区</option>
+                    <option value="石景山区">石景山区</option>
+                    <option value="门头沟区">门头沟区</option>
+                    <option value="房山区">房山区</option>
+                    <option value="通州区">通州区</option>
+                    <option value="顺义区">顺义区</option>
+                    <option value="昌平区">昌平区</option>
+                    <option value="大兴区">大兴区</option>
+                    <option value="怀柔区">怀柔区</option>
+                    <option value="平谷区">平谷区</option>
+                    <option value="东城区">东城区</option>
+                    <option value="西城区">西城区</option>
+                </select>
+    
+                <label for="addHospitalType">医院类型:</label>
+                <select id="addHospitalType" name="hospitalType" required>
+                    <option value="一级甲等医院">一级甲等医院</option>
+                    <option value="一级乙等医院">一级乙等医院</option>
+                    <option value="一级丙等医院">一级丙等医院</option>
+                    <option value="二级甲等医院">二级甲等医院</option>
+                    <option value="二级乙等医院">二级乙等医院</option>
+                    <option value="二级丙等医院">二级丙等医院</option>
+                    <option value="三级特等医院">三级特等医院</option>
+                    <option value="三级甲等医院">三级甲等医院</option>
+                    <option value="三级乙等医院">三级乙等医院</option>
+                    <option value="三级丙等医院">三级丙等医院</option>
+                </select>
+
+                <div class="latlong-group">
+                    <label for="addHospitalLng">经度:</label>
+                    <input type="number" step="0.0001" id="addHospitalLng" name="hospitalLng" required>
+        
+                    <label for="addHospitalLat">纬度:</label>
+                    <input type="number" step="0.0001" id="addHospitalLat" name="hospitalLat" required>
+                </div>
+                
+                <button type="submit">保存</button>
+            </form>
+        </div>
+    </div>
+    <!-- 模态框结束 -->
+
+    <!-- 修改模态框 -->
+    <div id="updateHospitalModal" class="modal">
+        <div class="modal-content">
+            <span class="close update-close">&times;</span>
+            <div class="top-title"><label>请输入修改信息</label></div>
+            <form id="updateHospitalForm" method="post" action="{% url 'update_hospital' %}">
+                <input type="hidden" id="updateHospitalId" name="hospitalId">
+                <label for="updateHospitalName">医院名称:</label>
+                <input type="text" id="updateHospitalName" name="hospitalName" required>
+    
+                <label for="updateHospitalArea">医院区属:</label>
+                <select  id="updateHospitalArea" name="hospitalArea" required>
+                    <option value="海淀区">海淀区</option>
+                    <option value="朝阳区">朝阳区</option>
+                    <option value="密云区">密云区</option>
+                    <option value="延庆区">延庆区</option>
+                    <option value="丰台区">丰台区</option>
+                    <option value="石景山区">石景山区</option>
+                    <option value="门头沟区">门头沟区</option>
+                    <option value="房山区">房山区</option>
+                    <option value="通州区">通州区</option>
+                    <option value="顺义区">顺义区</option>
+                    <option value="昌平区">昌平区</option>
+                    <option value="大兴区">大兴区</option>
+                    <option value="怀柔区">怀柔区</option>
+                    <option value="平谷区">平谷区</option>
+                    <option value="东城区">东城区</option>
+                    <option value="西城区">西城区</option>
+                </select>
+    
+                <label for="updateHospitalType">医院类型:</label>
+                <select id="updateHospitalType" name="hospitalType" required>
+                    <option value="一级甲等医院">一级甲等医院</option>
+                    <option value="一级乙等医院">一级乙等医院</option>
+                    <option value="一级丙等医院">一级丙等医院</option>
+                    <option value="二级甲等医院">二级甲等医院</option>
+                    <option value="二级乙等医院">二级乙等医院</option>
+                    <option value="二级丙等医院">二级丙等医院</option>
+                    <option value="三级特等医院">三级特等医院</option>
+                    <option value="三级甲等医院">三级甲等医院</option>
+                    <option value="三级乙等医院">三级乙等医院</option>
+                    <option value="三级丙等医院">三级丙等医院</option>
+                </select>
+
+                <div class="latlong-group">
+                    <label for="updateHospitalLng">经度:</label>
+                    <input type="number" step="0.0001" id="updateHospitalLng" name="hospitalLng" required>
+        
+                    <label for="updateHospitalLat">纬度:</label>
+                    <input type="number" step="0.0001" id="updateHospitalLat" name="hospitalLat" required>
+                </div>
+                
+                <button type="submit">保存</button>
+            </form>
+        </div>
+    </div>
+    <!-- 模态框结束 -->
+
+    <!-- 隐藏的表单，用于提交修改 -->
+    <form id="updateForm" method="post" action="{% url 'update_hospital' %}">
+        {% csrf_token %}
+        <input type="hidden" id="hospitalId" name="hospitalId">
+        <input type="hidden" id="hospitalName" name="hospitalName">
+        <input type="hidden" id="hospitalArea" name="hospitalArea">
+        <input type="hidden" id="hospitalType" name="hospitalType">
+        <input type="hidden" id="hospitalLng" name="hospitalLng">
+        <input type="hidden" id="hospitalLat" name="hospitalLat">
+    </form>
+
+</body>
+
+<script type="text/javascript" src="{% static 'js/bg.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.animsition.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/modal.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/delete_hostipal.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/update_hostipal.js' %}"></script>
+</html>

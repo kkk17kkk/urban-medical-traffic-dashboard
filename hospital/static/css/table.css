@@ -1,0 +1,189 @@
+/* 基本样式 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+/* 表格样式 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: transparent; /* 设置背景为透明 */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+th, td {
+    padding: 10px; /* 单元格内边距 */
+    border: 1px solid #ddd;
+    text-align: right; /* 水平对齐 */
+    vertical-align: middle; /* 垂直对齐 */
+}
+/* 表格行间距 */
+table tr {
+    height: 50px; /* 行高，根据需要调整 */
+}
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+/* 第一列的标题和数据列样式 */
+table th:first-child,
+table td:first-child {
+    text-align: right; /* 文字右对齐 */
+    padding-right: 20px; /* 增加右内边距 */
+}
+table td:first-child {
+            font-size: 15px; /* 设置字号 */
+            font-weight: bold; /* 设置加粗 */
+
+        }
+/* 表格第二列的标题和数据列样式 */
+table th:nth-child(2),
+table td:nth-child(2) {
+    text-align: center; /* 水平居中对齐 */
+    vertical-align: middle; /* 垂直居中对齐 */
+}
+
+/* 表格内的表单元素样式 */
+table select,
+table input[type="text"],
+table input[type="file"],
+table textarea {
+    width: 100%; /* 宽度设为100% */
+    padding: 8px;
+    margin: auto; /* 使控件在单元格内水平居中 */
+    box-sizing: border-box;
+    display: block; /* 使控件宽度填满单元格 */
+}
+
+/* 表格内的提交和重置按钮样式 */
+table input[type="submit"],
+table input[type="reset"] {
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    background-color: #0f439e; /* 原来的颜色，改成蓝色 */
+    color: white;
+    margin: 8px; /* 上下左右都有间距 */
+}
+
+/* 按钮悬停效果 */
+table input[type="submit"]:hover,
+table input[type="reset"]:hover {
+    background-color: rgba(11, 21, 70, 0.84); /* 改成蓝色 */
+}
+
+/* 按钮容器样式 */
+.button-container {
+    display: flex;
+    justify-content: center; /* 水平居中按钮 */
+    align-items: center; /* 垂直居中按钮 */
+    gap: 10px; /* 按钮之间的间距 */
+    width: 100%; /* 容器宽度100% */
+    text-align: center; /* 确保按钮文本居中 */
+}
+
+/* 表格单元格内居中对齐 */
+td {
+    text-align: center; /* 确保所有内容在单元格内居中对齐 */
+}
+
+/* 表单元素样式 */
+input[type="radio"], input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+label {
+    margin-right: 10px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+/* 备注文本区域样式 */
+.textarea {
+    margin-top: 10px;
+}
+
+.textarea-numberbar {
+    text-align: right;
+    color: #666;
+}
+
+.textarea-length {
+    font-size: 12px;
+}
+
+/* 红色星号样式 */
+.c-red {
+    color: red;
+}
+/* 设置 itemTit 类中的文字为加粗和加大字号 */
+.itemTit {
+    font-size: 24px; /* 设置字号，可以根据需要调整 */
+    font-weight: bold; /* 设置加粗 */
+    color: green; /* 字体颜色为绿色 */
+}
+
+
+.custom-file-upload {
+    display: inline-block;
+    padding: 4px 8px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    transition: background-color 0.3s ease;
+}
+
+/* 按钮基本样式 */
+.file-upload-btn {
+    display: inline-block;
+    padding: 8px 15px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    position: relative;
+    overflow: hidden; /* 确保文本不会超出按钮宽度 */
+    text-overflow: ellipsis; /* 如果文本超出，显示省略号 */
+    white-space: nowrap; /* 防止文本换行 */
+    max-width: 100%; /* 按钮宽度不超过其父元素 */
+}
+
+/* 按钮悬停效果 */
+.file-upload-btn:hover,
+.file-upload-btn:focus {
+    background-color: #0056b3;
+}
+
+/* 文件名显示样式 */
+.file-upload-btn::after {
+    content: attr(data-label); /* 使用自定义属性显示文件名 */
+    position: absolute;
+    left: 100%;
+    top: 0;
+    white-space: nowrap;
+    margin-left: 10px; /* 与按钮之间的间距 */
+    font-size: 14px;
+    background-color: #007bff;
+    border-radius: 4px;
+    padding: 8px;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+/* 文件选中时按钮颜色变深 */
+input[type="file"]:focus + .file-upload-btn {
+    background-color: #0056b3;
+}
+

@@ -1,0 +1,107 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+<title>医院周边交通综合治理评价管理系统登录</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/scanboardLogin.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/animsition.css' %}" />
+<style>
+	.logo {
+		display: block;
+		margin-bottom: 0px; 
+		text-align: center;
+	}
+	
+	.logo h1 {
+		position: relative;
+		margin-top: 180px; 
+		margin-bottom: 20px;
+		background: url('{% static 'images/titBg.png' %}') no-repeat center center;
+		background-size: cover; /* 使背景图片覆盖整个元素 */
+		display: inline-block; /* 使背景图片仅应用于标题 */
+		padding: 20px 40px; /* 调整标题内边距以确保文本清晰可见 */
+		color: white; /* 设置文本颜色，以便在背景上清晰可见 */
+		font-size: 2em; /* 调整字体大小 */
+		font-weight: bold; /* 设置加粗 */
+		white-space: nowrap; /* 防止换行 */
+		border-radius: 10px; /* 添加圆角 */
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加阴影以提高视觉效果 */
+	}
+</style>
+</head>
+<body>
+	<div class="wp animsition">
+		<a class="logo">
+			<h1>医院周边交通综合治理评价管理系统</h1>
+		</a>
+		<div class="boardLogin">
+			{% if alert_message %}
+        		<script>alert("{{ alert_message }}");</script>
+    		{% endif %}
+			<form method="post" action="{% url 'index' %}">
+				{% csrf_token %}
+				<div class="inpGroup" style="margin-bottom:20px;margin-top:-240px;">
+					<span class="loginIco1"></span>
+					<input type="text" name="username" placeholder="请输入您的用户名">
+				</div>
+				
+				<div class="inpGroup">
+					<span class="loginIco2"></span>
+					<input type="password" name="password" placeholder="请输入您的密码">
+				</div>
+				
+				<div style="margin-top:30px;">
+				<button type="submit" class="submit" id="loginButton">登录</button>
+				</div>
+				<p style="margin-top:16px;color:#8fdcff;text-align:center;line-height:1.8;">
+					Demo账号：管理员 demo_admin / DemoAdmin123!<br>
+					调研员：demo_surveyor / DemoSurvey123!　医院用户：demo_hospital / DemoHospital123!
+				</p>
+			</form>
+		</div>
+	</div>
+	<div id="particles-js"></div>
+	{% if alert_message %}
+    <script type="text/javascript">
+        alert('{{ alert_message }}');
+    </script>
+    {% endif %}
+</body>
+<script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.animsition.js' %}"></script>
+<script src="{% static 'js/particles.min.js' %}"></script>
+<script src="{% static 'js/app.js' %}"></script>
+<!--script src="static/js/login.js"></script-->
+<script type="text/javascript">
+	$(".animsition").animsition({
+	    inClass               :   'fade-in',
+	    outClass              :   'fade-out',
+	    inDuration            :    800,
+	    outDuration           :    1000,
+	    linkElement           :   '.animsition-link',
+
+	    loading               :    false,
+	    loadingParentElement  :   'body',
+	    loadingClass          :   'animsition-loading',
+	    unSupportCss          : [ 'animation-duration',
+	                              '-webkit-animation-duration',
+	                              '-o-animation-duration'
+	                            ],
+	
+
+	    overlay               :   false,
+	    
+	    overlayClass          :   'animsition-overlay-slide',
+	    overlayParentElement  :   'body'
+  	});
+	/*
+	$(".submit").click(function(event){ 
+		event.preventDefault(); 
+		//点击登录跳转到看板页面
+		window.location.href = "hospital/scanboard/";
+	});*/
+</script>
+</html>
