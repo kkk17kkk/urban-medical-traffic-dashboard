@@ -159,7 +159,6 @@ Environment & Deployment
 
 ## 数据设计与流程
 
-![alt text](assets/data.png)
 
 ```text
 Hospital / Surveyor / Admin Input
@@ -185,7 +184,7 @@ Dashboard Visualization
 
 ## 核心数据模型
 
-![alt text](image.png)
+![alt text](assets/data.png)
 
 - `HInfo`：医院基础信息，包括名称、区属、类型、经纬度和启用状态。
 - `UserProfile`：用户角色扩展，关联 Django Auth 用户与医院。
